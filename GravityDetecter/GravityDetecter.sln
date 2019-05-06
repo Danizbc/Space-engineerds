@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GravityDetecter", "GravityDetecter\GravityDetecter.csproj", "{07071AE6-3950-4762-A18F-36998CDE7703}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07071AE6-3950-4762-A18F-36998CDE7703}.Debug|x64.ActiveCfg = Debug|x64
+		{07071AE6-3950-4762-A18F-36998CDE7703}.Debug|x64.Build.0 = Debug|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {58C123C1-E78B-431D-AEAA-740945ABBE5F}
+	EndGlobalSection
+EndGlobal
