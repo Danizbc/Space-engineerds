@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunicationReciver", "CommunicationReciver\CommunicationReciver.csproj", "{399D04A7-874A-4062-BDB6-3331B161BCDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{399D04A7-874A-4062-BDB6-3331B161BCDC}.Debug|x64.ActiveCfg = Debug|x64
+		{399D04A7-874A-4062-BDB6-3331B161BCDC}.Debug|x64.Build.0 = Debug|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7B2E292A-53C7-453F-A718-7B85E7123B7E}
+	EndGlobalSection
+EndGlobal
