@@ -72,6 +72,11 @@ namespace IngameScript
         {
             Runtime.UpdateFrequency = UpdateFrequency.Update100 | UpdateFrequency.Update10;
             IMyTextPanel textPanel = (IMyTextPanel)GridTerminalSystem.GetBlockWithName("LCD");
+            IMySensorBlock mySensorBlock = (IMySensorBlock)GridTerminalSystem.GetBlockWithName("EraserSensor");
+            if (mySensorBlock.DetectPlayers)
+            {
+                allmessage = "";
+            }
             // If setupcomplete is false, run Setup method.
             if (!setupcomplete)
             {
