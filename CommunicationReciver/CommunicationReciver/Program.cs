@@ -123,7 +123,7 @@ namespace IngameScript
 
 
 
-                    allmessage += $"{messagetext}";
+                    allmessage += $"new message \n {messagetext}";
                     textPanel.WriteText(allmessage);
                 }
 
@@ -143,7 +143,7 @@ namespace IngameScript
             radio1 = GridTerminalSystem.GetBlockWithName("AntennaReciver") as IMyRadioAntenna;
 
 
-            pb = GridTerminalSystem.GetBlockWithName("Programmable block") as IMyProgrammableBlock;
+            pb = GridTerminalSystem.GetBlockWithName("Programm Reciver") as IMyProgrammableBlock;
 
             // Connect the PB to the antenna. This can also be done from the grid terminal.
             radio1.AttachedProgrammableBlock = pb.EntityId;
