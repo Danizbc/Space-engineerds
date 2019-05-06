@@ -60,12 +60,6 @@ namespace IngameScript
             // needed.
         }
 
-        bool setupcomplete = false;
-
-        IMyRadioAntenna radio1;
-
-        IMyProgrammableBlock pb;
-
         string allmessage = "";
 
         bool setupcomplete = false;
