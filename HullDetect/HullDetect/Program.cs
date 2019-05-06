@@ -60,6 +60,8 @@ namespace IngameScript
             // needed.
         }
 
+        UpdateFrequency update = (UpdateFrequency)40;
+
         List<IMySlimBlock> slimBlocks;
         IMyProjector myProjector;
         IMyTextPanel DamagePanel;
@@ -71,6 +73,8 @@ namespace IngameScript
             DamagePanel = (IMyTextPanel)GridTerminalSystem.GetBlockWithName("DamagePanel");
             slimBlocks = new List<IMySlimBlock>(GetSlimBlocks());
             string panelString = "";
+
+            
 
             foreach (IMySlimBlock block in slimBlocks)
             {
