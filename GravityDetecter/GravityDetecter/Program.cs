@@ -63,32 +63,50 @@ namespace IngameScript
         public void Main(string argument, UpdateType updateSource)
         {
 
-            IMyCockpit myCockpit = (IMyCockpit)GridTerminalSystem.GetBlockWithName("");
-            List<IMyThrust> thrusters = new List<IMyThrust>();
+            IMyCockpit myCockpit = (IMyCockpit)GridTerminalSystem.GetBlockWithName("Cockpit");
+            List<IMyThrust> upthrusters = new List<IMyThrust>();
 
-            thrusters = GetMyThrusts();
+
+
+            upthrusters = GetMyUpThrusts("ThrustUP");
+
 
             double gravity = myCockpit.GetNaturalGravity().Length() / 9.81;
+            double speed = myCockpit.GetShipSpeed();
 
-            if (gravity < 0.5 )
+            Echo($"ship speed = {speed.ToString()}");
+            Echo(gravity.ToString());
+
+            if (gravity > 0.30)
             {
-                foreach (IMyThrust ThrustUP in thrusters)
+                foreach (IMyThrust ThrustUP in upthrusters)
                 {
                     ThrustUP.Enabled = true;
+                    ThrustUP.ThrustOverridePercentage = 70;
+
                 }
+                Echo("im here 1");
             }
             else
             {
-                foreach (IMyThrust ThrustUP in thrusters)
+                foreach (IMyThrust ThrustUP in upthrusters)
                 {
                     ThrustUP.Enabled = false;
+                    ThrustUP.ThrustOverridePercentage = 0;
+
                 }
+                Echo("im here 2");
             }
-            
+
         }
 
-        List<IMyThrust> GetMyThrusts()
+
+        // New method here
+
+        List<IMyThrust> GetMyUpThrusts(string thrusterName)
         {
+            Runtime.UpdateFrequency = UpdateFrequency.Update1;
+
             List<IMyThrust> tempTrust = new List<IMyThrust>();
             List<IMyTerminalBlock> myTerminalBlocks = new List<IMyTerminalBlock>();
             GridTerminalSystem.GetBlocksOfType<IMyThrust>(myTerminalBlocks);
@@ -96,9 +114,11 @@ namespace IngameScript
 
             foreach (IMyThrust thrust in myTerminalBlocks)
             {
-                if (thrust.DisplayNameText == $"ThrustUp")
+                if (thrust.DisplayNameText == thrusterName)
                 {
                     tempTrust.Add(thrust);
+                    Echo("Up thrust found");
+
                 }
                 else
                 {
@@ -110,6 +130,8 @@ namespace IngameScript
         }
 
 
-        
+
+
+
     }
 }
