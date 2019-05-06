@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HullDetect", "HullDetect\HullDetect.csproj", "{D9FC3771-706D-4407-A4FA-4FBFADDE63DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9FC3771-706D-4407-A4FA-4FBFADDE63DE}.Debug|x64.ActiveCfg = Debug|x64
+		{D9FC3771-706D-4407-A4FA-4FBFADDE63DE}.Debug|x64.Build.0 = Debug|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8EFB6F49-4530-43CB-8813-373FFFCF45CC}
+	EndGlobalSection
+EndGlobal
