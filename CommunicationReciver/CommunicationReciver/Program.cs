@@ -66,8 +66,18 @@ namespace IngameScript
 
         IMyProgrammableBlock pb;
 
+        string allmessage = "";
+
+        bool setupcomplete = false;
+
+        IMyRadioAntenna radio1;
+
+        IMyProgrammableBlock pb;
+
         public void Main(string argument, UpdateType updateSource)
         {
+            Runtime.UpdateFrequency = UpdateFrequency.Update100 | UpdateFrequency.Update10;
+            IMyTextPanel textPanel = (IMyTextPanel)GridTerminalSystem.GetBlockWithName("LCD");
             // If setupcomplete is false, run Setup method.
             if (!setupcomplete)
             {
@@ -78,9 +88,9 @@ namespace IngameScript
             {
                 string tag1 = "Channel-1";
 
-               // To create a listener, we use IGC to access the relevant method.
-               // We pass the same tag argument we used for our message. 
-               IGC.RegisterBroadcastListener(tag1);
+                // To create a listener, we use IGC to access the relevant method.
+                // We pass the same tag argument we used for our message. 
+                IGC.RegisterBroadcastListener(tag1);
 
 
                 // Create a list for broadcast listeners.
@@ -117,8 +127,18 @@ namespace IngameScript
                     Echo("from address " + sender.ToString() + ": \n\r");
                     Echo(messagetext);
 
+
+
+                    allmessage += $"{messagetext}";
+                    textPanel.WriteText(allmessage);
                 }
 
+            }
+
+            int textlength = textPanel.GetText().Length;
+            if (textlength > 100)
+            {
+                allmessage = "";
             }
 
         }
