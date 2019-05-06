@@ -60,18 +60,23 @@ namespace IngameScript
             // needed.
         }
 
-        string allmessage = "";
-
         bool setupcomplete = false;
+
 
         IMyRadioAntenna radio1;
 
         IMyProgrammableBlock pb;
 
+        
+
+        //IMyIntergridCommunicationSystem radio2;
+        //List<IMyBroadcastListener> myBroadcastListeners = new List<IMyBroadcastListener>();
+        //radio2.SendBroadcastMessage("Tag", "Hello World", TransmissionDistance.TransmissionDistanceMax);
+
         public void Main(string argument, UpdateType updateSource)
         {
-            Runtime.UpdateFrequency = UpdateFrequency.Update100 | UpdateFrequency.Update10;
-            IMyTextPanel textPanel = (IMyTextPanel)GridTerminalSystem.GetBlockWithName("LCD");
+            IMyTextPanel LCDWritingScreen = (IMyTextPanel)GridTerminalSystem.GetBlockWithName("LCD");
+
             // If setupcomplete is false, run Setup method.
             if (!setupcomplete)
             {
@@ -80,83 +85,44 @@ namespace IngameScript
             }
             else
             {
+                // Create a tag. Our friend will use this in his script in order to receive our messages.
                 string tag1 = "Channel-1";
+
+                // Create our message. We first make it a string, and then we "box" it as an object type.               
+                string messageOut = LCDWritingScreen.GetText();
+
+                // Through the IGC variable we issue the broadcast method. IGC is "pre-made",
+                // so we don't have to declare it ourselves, just go ahead and use it. 
+                IGC.SendBroadcastMessage(tag1, messageOut, TransmissionDistance.TransmissionDistanceMax);
+
 
                 // To create a listener, we use IGC to access the relevant method.
                 // We pass the same tag argument we used for our message. 
                 IGC.RegisterBroadcastListener(tag1);
 
-
-                // Create a list for broadcast listeners.
-                List<IMyBroadcastListener> listeners = new List<IMyBroadcastListener>();
-
-                // The method argument below is the list we wish IGC to populate with all Listeners we've made.
-                // Our Listener will be at index 0, since it's the only one we've made so far.
-                IGC.GetBroadcastListeners(listeners);
-
-                if (listeners[0].HasPendingMessage)
-                {
-                    // Let's create a variable for our new message. 
-                    // Remember, messages have the type MyIGCMessage.
-                    MyIGCMessage message = new MyIGCMessage();
-
-                    // Time to get our message from our Listener (at index 0 of our Listener list). 
-                    // We do this with the following method:
-                    message = listeners[0].AcceptMessage();
-
-
-                    // A message is a struct of 3 variables. To read the actual data, 
-                    // we access the Data field, convert it to type string (unboxing),
-                    // and store it in the variable messagetext.
-                    string messagetext = message.Data.ToString();
-
-                    // We can also access the tag that the message was sent with.
-                    string messagetag = message.Tag;
-
-                    //Here we store the "address" to the Programmable Block (our friend's) that sent the message.
-                    long sender = message.Source;
-
-                    //Do something with the information!
-                    Echo("Message received with tag" + messagetag + "\n\r");
-                    Echo("from address " + sender.ToString() + ": \n\r");
-                    Echo(messagetext);
-
-
-
-                    allmessage += $"{messagetext}";
-                    textPanel.WriteText(allmessage);
-                }
-
             }
-
-            int textlength = textPanel.GetText().Length;
-            if (textlength > 100)
-            {
-                allmessage = "";
-            }
-
         }
 
 
         public void Setup()
         {
-            radio1 = GridTerminalSystem.GetBlockWithName("AntennaReciver") as IMyRadioAntenna;
-
-
-            pb = GridTerminalSystem.GetBlockWithName("Programmable block") as IMyProgrammableBlock;
+            radio1 = (IMyRadioAntenna)GridTerminalSystem.GetBlockWithName("Ant");
+            pb = (IMyProgrammableBlock)GridTerminalSystem.GetBlockWithName("Programmable block");
 
             // Connect the PB to the antenna. This can also be done from the grid terminal.
             radio1.AttachedProgrammableBlock = pb.EntityId;
 
             if (radio1 != null)
             {
-                Echo("Setup complete.");
+
+                Echo("SetupC omplete");
                 setupcomplete = true;
             }
             else
             {
-                Echo("Setup failed. No antenna found.");
+                Echo("Setup failed");
             }
+
         }
     }
 }
