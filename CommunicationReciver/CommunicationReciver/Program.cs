@@ -123,7 +123,7 @@ namespace IngameScript
 
 
 
-                    allmessage += $"new message \n {messagetext}";
+                    allmessage += $"\n new message \n {messagetext}";
                     textPanel.WriteText(allmessage);
                 }
 
