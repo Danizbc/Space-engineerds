@@ -166,8 +166,15 @@ namespace IngameScript
                         {
                             if (AcceptPanel.GetText() == acceptCode)
                             {
+                                
                                 Gates("y");
                                 running = true;
+                                knownIp.Add(sender.ToString());
+                                foreach (string ipaddress in knownIp)
+                                {
+                                    TextMessage += $"{ipaddress} \n";
+                                }
+                                userIpPanel.WriteText(TextMessage);
                             }
                             else if (AcceptPanel.GetText() == deniedCode)
                             {
