@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CordReciver", "CordReciver\CordReciver.csproj", "{9276ADF9-8F9E-4791-97A5-BF8241E44A8F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9276ADF9-8F9E-4791-97A5-BF8241E44A8F}.Debug|x64.ActiveCfg = Debug|x64
+		{9276ADF9-8F9E-4791-97A5-BF8241E44A8F}.Debug|x64.Build.0 = Debug|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4E0CEEC3-C424-4091-AC99-4729A8296D88}
+	EndGlobalSection
+EndGlobal
