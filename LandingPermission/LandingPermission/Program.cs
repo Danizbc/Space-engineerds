@@ -166,7 +166,7 @@ namespace IngameScript
                         {
                             if (AcceptPanel.GetText() == acceptCode)
                             {
-                                
+                                //hello
                                 Gates("y");
                                 running = true;
                                 knownIp.Add(sender.ToString());
