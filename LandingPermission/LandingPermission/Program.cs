@@ -21,95 +21,90 @@ namespace IngameScript
     partial class Program : MyGridProgram
     {
 
-        /*Change theese variables to the correct name of the blocks in your ship.
-         * 
-         * IMPORTANT THEESE BLOCK MUST BE BUILD BEFORE SCRIPT WILL WORK!
-         * 
-         * LCD panel with name          = LCD-SavePanel
-         * LCD panel with name          = LCD-Accept
-         * ANTENNA with name            = Antenna
-         * Programable block with name  = Programblock-detecter
-         * TimerBlock with name         = TimeUser
-         * SoundBlock with name         = GateAlarm
-         * 
-         * IMPORTANT THEESE BLOCK MUST BE BUILD BEFORE SCRIPT WILL WORK!
-         * 
-         * This script wil set up an reciver that gets player message and source (ip i guess)
-         * if message is the same as string AskPermissionToLand and it knows your IP it will open the doors
-         * if it doesnt know you ip it will start alarm and await base user to input text into lcd screen, he got 2 choices accept or denied
-         * accept will open door and save ip to an lcd screen for furture visit.
-         * denied will close door and activate turrets
-         */
 
-        //code you write into screen to allo unknown people.
-        string acceptCode = "accept";
-        //code you write into screen to deny people
-        string deniedCode = "denied";
+
+        //code the sender need to send to you.
+        string acceptCode = "666";
+
 
         //An lcd text panel that save known ips. put down a lcd screen change name to lcd-SavePanel 
         string lcdSavePanel = "LCD-SavePanel";
-        //The name of the screen where you write into and if code is = y    then it will save user
-        string lcdAcceptPanel = "LCD-Accept";
+
+
         //The name of your antenna
         string antennaName = "Antenna";
+
         //The name of your programmable block
         string programBlockName = "Programblock-detecter";
+
         //The broadcast is like a radio channel. edit channel 1 to what you desire, be aware to change on both platforms.
-        string broadcastChannel = "landing channel";
-        //use = looking player that want to land writes "im asking for permission to land" (without "") and the person ip is accepted it will open hangar doors.
-        string askPermissionToLand = "im asking for permission to land";
+        string broadcastChannel = "Channel-1";
+
+
         //Alarm for unknown ips
         string AlarmBlockName = "GateAlarm";
 
+        //An lcd screen for messages
+        string messagePanelName = "MessagePanel";
 
 
-        string TextMessage;
 
 
         //Dont touch theese
+        string TextMessage = "";
         bool setupcomplete = false;
         IMyRadioAntenna radio1;
         IMyProgrammableBlock pb;
         IMyTextPanel userIpPanel;
         IMyTextPanel AcceptPanel;
-        IMyTimerBlock timerBlock;
         IMySoundBlock soundBlock;
         List<string> knownIp = new List<string>();
-        bool running = false;
 
 
 
-        public Program()
+        public void SaveData()
         {
+
             userIpPanel = (IMyTextPanel)GridTerminalSystem.GetBlockWithName(lcdSavePanel);
-
             string[] ips = userIpPanel.GetText().Split(' ');
-            foreach (string ip in ips)
+            for (int i = 0; i < ips.Length; i++)
             {
-                knownIp.Add(ip);
+                knownIp.Add(ips[i]);
+                Echo(ips[i]);
             }
-        }
-
-
-
-        public void Save()
-        {
-
 
         }
+
 
 
 
         public void Main(string argument, UpdateType updateSource)
         {
-            AcceptPanel = (IMyTextPanel)GridTerminalSystem.GetBlockWithName(lcdAcceptPanel);
+
+
             soundBlock = (IMySoundBlock)GridTerminalSystem.GetBlockWithName(AlarmBlockName);
+            Runtime.UpdateFrequency = UpdateFrequency.Update100;
+
+
+            IMyTextPanel MessagePanel = (IMyTextPanel)GridTerminalSystem.GetBlockWithName(messagePanelName);
+
+
+
+
+
+
+
+
+
 
             // If setupcomplete is false, run Setup method.
             if (!setupcomplete)
             {
+
                 Echo("Running setup.");
                 Setup();
+                SaveData();
+
             }
             else
             {
@@ -127,6 +122,10 @@ namespace IngameScript
                 // Our Listener will be at index 0, since it's the only one we've made so far.
                 IGC.GetBroadcastListeners(listeners);
 
+                foreach (var item in listeners)
+                {
+                    Echo("Somone listen");
+                }
                 if (listeners[0].HasPendingMessage)
                 {
                     // Let's create a variable for our new message. 
@@ -154,36 +153,61 @@ namespace IngameScript
                     Echo("from address " + sender.ToString() + ": \n\r");
                     Echo(messagetext);
 
-                    if (knownIp.Contains(sender.ToString()) && messagetext.Contains(askPermissionToLand.ToLower()))
-                    {
-                        Echo("Here");
-                    }
-                    else if (!knownIp.Contains(sender.ToString()) && messagetext.Contains(askPermissionToLand.ToLower()))
-                    {
-                        //insert alarm for landing and when writing y into panel 
-                        soundBlock.Play();
-                        while (running == false)
-                        {
-                            if (AcceptPanel.GetText() == acceptCode)
-                            {
-                                //hello
-                                Gates("y");
-                                running = true;
-                                knownIp.Add(sender.ToString());
-                                foreach (string ipaddress in knownIp)
-                                {
-                                    TextMessage += $"{ipaddress} \n";
-                                }
-                                userIpPanel.WriteText(TextMessage);
-                            }
-                            else if (AcceptPanel.GetText() == deniedCode)
-                            {
+                    MessagePanel.WriteText("Error");
 
-                                Gates("n");
-                                running = true;
-                            }
-                        }
+                    if (knownIp.Contains(sender.ToString()))
+                    {
+                        Echo("Here222");
+                        Gates("y");
+                        MessagePanel.WriteText(messagetext);
+
                     }
+                    else if (messagetext.Contains(acceptCode))
+                    {
+                        MessagePanel.WriteText("Err33or");
+                        soundBlock.Play();
+
+                        MessagePanel.WriteText("accepted part 2");
+
+
+                        Echo("Accepted");
+
+                        Gates("y");
+
+
+                        if (knownIp.Contains(sender.ToString()))
+                        {
+                            MessagePanel.WriteText("accepted part 3");
+                        }
+                        else
+                        {
+                            knownIp.Add(sender.ToString());
+                            MessagePanel.WriteText(messagetext);
+                        }
+
+                        TextMessage = "";
+                        for (int i = 0; i < knownIp.Count; i++)
+                        {
+
+
+                            TextMessage += $"{knownIp[i]}\n";
+
+                        }
+
+                        userIpPanel.WriteText(TextMessage);
+
+
+
+                    }
+                    else
+                    {
+                        Echo("Im here");
+                        MessagePanel.WriteText("Acces denied" + "\n" + TextMessage);
+                        Gates("n");
+
+                    }
+
+
 
 
                 }
@@ -205,7 +229,7 @@ namespace IngameScript
                 {
                     door.CloseDoor();
                 }
-               
+
             }
         }
 
