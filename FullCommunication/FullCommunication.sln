@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullCommunication", "FullCommunication\FullCommunication.csproj", "{679D60D9-41E3-4438-B049-F123DB53FED4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{679D60D9-41E3-4438-B049-F123DB53FED4}.Debug|x64.ActiveCfg = Debug|x64
+		{679D60D9-41E3-4438-B049-F123DB53FED4}.Debug|x64.Build.0 = Debug|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {951E28D1-2814-47CC-BB6B-A16BA208A70B}
+	EndGlobalSection
+EndGlobal

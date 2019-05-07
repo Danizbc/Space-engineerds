@@ -62,23 +62,34 @@ namespace IngameScript
 
 
 
+        //Change theese variables to the correct name of the blocks in your ship.
+        string lcdTextSender = "lcdTextSender";
+        string MessageReciverScreen = "lcdReciever";
+        string antennaName = "Antenna";
+        string programBlockName = "Programmable block";
+        //The broadcast is like a radio channel. edit channel 1 to what you desire, be aware to change on both platforms.
+        string broadcastChannel = "Channel 1";
 
 
-        string allmessage = "";
+        //Dont touch theese
         bool setupcomplete = false;
         IMyRadioAntenna radio1;
         IMyProgrammableBlock pb;
+        string allmessage = "";
+
+
+
 
         public void Main(string argument, UpdateType updateSource)
         {
-            Runtime.UpdateFrequency = UpdateFrequency.Update100 | UpdateFrequency.Update10;
-            IMyTextPanel textPanel = (IMyTextPanel)GridTerminalSystem.GetBlockWithName("LCD");
-            IMySensorBlock mySensorBlock = (IMySensorBlock)GridTerminalSystem.GetBlockWithName("EraserSensor");
-            if (mySensorBlock.IsActive)
-            {
-                allmessage = "";
-                textPanel.WriteText("");
-            }
+            //screen that you write text into and send
+            IMyTextPanel lcdWritingScreen = (IMyTextPanel)GridTerminalSystem.GetBlockWithName(lcdTextSender);
+
+            //screen that recives
+            IMyTextPanel lcdRecieverScreen = (IMyTextPanel)GridTerminalSystem.GetBlockWithName(MessageReciverScreen);
+
+
+
             // If setupcomplete is false, run Setup method.
             if (!setupcomplete)
             {
@@ -87,12 +98,17 @@ namespace IngameScript
             }
             else
             {
-                string tag1 = "Channel-1";
+
+                // Create our message. We first make it a string, and then we "box" it as an object type.               
+                string messageOut = lcdWritingScreen.GetText();
+
+                // Through the IGC variable we issue the broadcast method. IGC is "pre-made",
+                // so we don't have to declare it ourselves, just go ahead and use it. 
+                IGC.SendBroadcastMessage(broadcastChannel, messageOut, TransmissionDistance.TransmissionDistanceMax);
 
                 // To create a listener, we use IGC to access the relevant method.
                 // We pass the same tag argument we used for our message. 
-                IGC.RegisterBroadcastListener(tag1);
-
+                IGC.RegisterBroadcastListener(broadcastChannel);
 
                 // Create a list for broadcast listeners.
                 List<IMyBroadcastListener> listeners = new List<IMyBroadcastListener>();
@@ -131,39 +147,31 @@ namespace IngameScript
 
 
                     allmessage += $"\n new message \n {messagetext}";
-                    textPanel.WriteText(allmessage);
+                    lcdRecieverScreen.WriteText(allmessage);
                 }
-
             }
-
-            int textlength = textPanel.GetText().Length;
-            if (textlength > 100)
-            {
-                allmessage = "";
-            }
-
         }
 
 
         public void Setup()
         {
-            radio1 = GridTerminalSystem.GetBlockWithName("AntennaReciver") as IMyRadioAntenna;
-
-
-            pb = GridTerminalSystem.GetBlockWithName("Programm Reciver") as IMyProgrammableBlock;
+            radio1 = (IMyRadioAntenna)GridTerminalSystem.GetBlockWithName(antennaName);
+            pb = (IMyProgrammableBlock)GridTerminalSystem.GetBlockWithName(programBlockName);
 
             // Connect the PB to the antenna. This can also be done from the grid terminal.
             radio1.AttachedProgrammableBlock = pb.EntityId;
 
             if (radio1 != null)
             {
-                Echo("Setup complete.");
+
+                Echo("SetupC omplete");
                 setupcomplete = true;
             }
             else
             {
-                Echo("Setup failed. No antenna found.");
+                Echo("Setup failed");
             }
+
         }
     }
 }

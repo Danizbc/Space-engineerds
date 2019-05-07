@@ -60,22 +60,30 @@ namespace IngameScript
             // needed.
         }
 
+
+
+        //Change theese variables to the correct name of the blocks in your ship.
+        string lcdName = "LCD";
+        string antennaName = "Antenna";
+        string programBlockName = "Programmable block";
+        //The broadcast is like a radio channel. edit channel 1 to what you desire, be aware to change on both platforms.
+        string broadcastChannel = "Channel 1";
+
+
+        //Dont touch theese
         bool setupcomplete = false;
-
-
         IMyRadioAntenna radio1;
-
         IMyProgrammableBlock pb;
 
         
 
-        //IMyIntergridCommunicationSystem radio2;
-        //List<IMyBroadcastListener> myBroadcastListeners = new List<IMyBroadcastListener>();
-        //radio2.SendBroadcastMessage("Tag", "Hello World", TransmissionDistance.TransmissionDistanceMax);
+
 
         public void Main(string argument, UpdateType updateSource)
         {
-            IMyTextPanel LCDWritingScreen = (IMyTextPanel)GridTerminalSystem.GetBlockWithName("LCD");
+            IMyTextPanel LCDWritingScreen = (IMyTextPanel)GridTerminalSystem.GetBlockWithName(lcdName);
+
+
 
             // If setupcomplete is false, run Setup method.
             if (!setupcomplete)
@@ -85,20 +93,17 @@ namespace IngameScript
             }
             else
             {
-                // Create a tag. Our friend will use this in his script in order to receive our messages.
-                string tag1 = "Channel-1";
 
                 // Create our message. We first make it a string, and then we "box" it as an object type.               
                 string messageOut = LCDWritingScreen.GetText();
 
                 // Through the IGC variable we issue the broadcast method. IGC is "pre-made",
                 // so we don't have to declare it ourselves, just go ahead and use it. 
-                IGC.SendBroadcastMessage(tag1, messageOut, TransmissionDistance.TransmissionDistanceMax);
-
+                IGC.SendBroadcastMessage(broadcastChannel, messageOut, TransmissionDistance.TransmissionDistanceMax);
 
                 // To create a listener, we use IGC to access the relevant method.
                 // We pass the same tag argument we used for our message. 
-                IGC.RegisterBroadcastListener(tag1);
+                IGC.RegisterBroadcastListener(broadcastChannel);
 
             }
         }
@@ -106,8 +111,8 @@ namespace IngameScript
 
         public void Setup()
         {
-            radio1 = (IMyRadioAntenna)GridTerminalSystem.GetBlockWithName("Ant");
-            pb = (IMyProgrammableBlock)GridTerminalSystem.GetBlockWithName("Programmable block");
+            radio1 = (IMyRadioAntenna)GridTerminalSystem.GetBlockWithName(antennaName);
+            pb = (IMyProgrammableBlock)GridTerminalSystem.GetBlockWithName(programBlockName);
 
             // Connect the PB to the antenna. This can also be done from the grid terminal.
             radio1.AttachedProgrammableBlock = pb.EntityId;
