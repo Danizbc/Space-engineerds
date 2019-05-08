@@ -61,7 +61,7 @@ namespace IngameScript
         }
 
         //Change theese variables to the correct name of the blocks in your ship.
-        string remoteControllerName = "Remote Control 2";
+        string remoteControllerName = "Remote Control";
         string lcdName = "LCD";
         string antennaName = "Antenna";
         string programBlockName = "Programmable block";
