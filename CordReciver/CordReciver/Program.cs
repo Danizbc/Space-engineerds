@@ -60,21 +60,20 @@ namespace IngameScript
             // needed.
         }
 
-
         //Change theese variables to the correct name of the blocks in your ship.
-        string remoteControllerName = "RemoteControll";
+        string remoteControllerName = "Remote Control 2";
         string lcdName = "LCD";
         string antennaName = "Antenna";
         string programBlockName = "Programmable block";
         //The broadcast is like a radio channel. edit channel 1 to what you desire, be aware to change on both platforms.
-        string broadcastChannel = "way point channel";
+        string broadcastChannel = "Channel-2";
 
 
         string allmessage = "";
         bool setupcomplete = false;
         IMyRadioAntenna radio1;
         IMyProgrammableBlock pb;
-        MyWaypointInfo wayPoint;
+
 
         public void Main(string argument, UpdateType updateSource)
         {
@@ -90,7 +89,7 @@ namespace IngameScript
             }
             else
             {
-                
+
 
                 // To create a listener, we use IGC to access the relevant method.
                 // We pass the same tag argument we used for our message. 
@@ -113,14 +112,14 @@ namespace IngameScript
                     // Time to get our message from our Listener (at index 0 of our Listener list). 
                     // We do this with the following method:
                     message = listeners[0].AcceptMessage();
-                    
+
 
                     // A message is a struct of 3 variables. To read the actual data, 
                     // we access the Data field, convert it to type string (unboxing),
                     // and store it in the variable messagetext.
                     string messagetext = message.Data.ToString();
 
-                    wayPoint = (MyWaypointInfo)message.Data;
+
 
                     // We can also access the tag that the message was sent with.
                     string messagetag = message.Tag;
@@ -135,15 +134,43 @@ namespace IngameScript
 
 
 
-                    allmessage += $"\n new message \n {messagetext}";
+                    allmessage += $"\n new message \n {messagetext}\n{messagetext.Split(':')[2]}";
                     textPanel.WriteText(allmessage);
 
-                    if (wayPoint.Coords != null)
+                    List<MyWaypointInfo> myWaypoints = new List<MyWaypointInfo>();
+
+                    string gpsname = messagetext.Split(':')[1];
+                    double x = 0;
+                    double y = 0;
+                    double z = 0;
+                    try
                     {
-                        remoteControl.AddWaypoint(wayPoint);
-                        remoteControl.SetAutoPilotEnabled(true);
-                        
+                        x = Convert.ToDouble(messagetext.Split(':')[2]);
+                        y = Convert.ToDouble(messagetext.Split(':')[3]);
+                        z = Convert.ToDouble(messagetext.Split(':')[4]);
                     }
+                    catch (Exception e)
+                    {
+
+                        Echo(e.Message);
+                    }
+
+
+
+                    Echo(messagetext.Split('1')[0]);
+
+                    myWaypoints.Add(new MyWaypointInfo(gpsname, x, y, z));
+
+                    remoteControl.ClearWaypoints();
+
+                    remoteControl.AddWaypoint(myWaypoints[0]);
+
+                    remoteControl.SetCollisionAvoidance(true);
+
+                    remoteControl.SetAutoPilotEnabled(true);
+
+
+
                 }
 
             }
@@ -159,10 +186,10 @@ namespace IngameScript
 
         public void Setup()
         {
-            radio1 = GridTerminalSystem.GetBlockWithName("AntennaReciver") as IMyRadioAntenna;
+            radio1 = GridTerminalSystem.GetBlockWithName(antennaName) as IMyRadioAntenna;
 
 
-            pb = GridTerminalSystem.GetBlockWithName("Programm Reciver") as IMyProgrammableBlock;
+            pb = GridTerminalSystem.GetBlockWithName(programBlockName) as IMyProgrammableBlock;
 
             // Connect the PB to the antenna. This can also be done from the grid terminal.
             radio1.AttachedProgrammableBlock = pb.EntityId;

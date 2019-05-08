@@ -68,10 +68,10 @@ namespace IngameScript
         string antennaName = "Antenna";
         string programBlockName = "Programmable block";
         //The broadcast is like a radio channel. edit channel 1 to what you desire, be aware to change on both platforms.
-        string broadcastChannel = "way point channel";
+        string broadcastChannel = "Channel-2";
 
 
-        MyWaypointInfo wayPoint;
+        MyWaypointInfo wayPoint = new MyWaypointInfo();
 
 
         //Dont touch theese
@@ -90,7 +90,15 @@ namespace IngameScript
 
             IMyRemoteControl remoteControl = (IMyRemoteControl)GridTerminalSystem.GetBlockWithName(remoteControllerName);
 
-            wayPoint = remoteControl.CurrentWaypoint;
+            List<MyWaypointInfo> mywaypoint = new List<MyWaypointInfo>();
+
+            remoteControl.GetWaypointInfo(mywaypoint);
+
+            foreach (MyWaypointInfo item in mywaypoint)
+            {
+                Echo(item.Coords.ToString());
+            }
+            wayPoint = mywaypoint[0];
 
             Echo(wayPoint.ToString());
 
@@ -110,7 +118,7 @@ namespace IngameScript
                 // so we don't have to declare it ourselves, just go ahead and use it. 
                 if (sendCords.ToLower() == "send" && wayPoint.Coords != null)
                 {
-                    IGC.SendBroadcastMessage(broadcastChannel, wayPoint, TransmissionDistance.TransmissionDistanceMax);
+                    IGC.SendBroadcastMessage(broadcastChannel, wayPoint.ToString(), TransmissionDistance.TransmissionDistanceMax);
                 }
                 else
                 {
