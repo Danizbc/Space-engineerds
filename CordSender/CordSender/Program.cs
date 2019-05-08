@@ -60,7 +60,7 @@ namespace IngameScript
             // needed.
         }
 
-
+        //
 
         //Change theese variables to the correct name of the blocks in your ship.
         string remoteControllerName = "RemoteControll";
